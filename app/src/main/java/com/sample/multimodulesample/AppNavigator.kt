@@ -6,48 +6,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.sample.auth.login.LoginScreen
-import com.sample.auth.login.LoginViewModel
-import com.sample.domain.dto.login.response.LoginResponse
-import com.sample.home.dashboard.DashboardScreen
-import com.sample.multimodulesample.NavigationItem.Details
-import com.sample.multimodulesample.NavigationItem.Home
+import com.sample.domain.dto.login.products.DomainProduct
+import com.sample.home.CustomNavTypes
+import com.sample.home.productdetails.screen.ProductDetailScreen
+import com.sample.home.products.ProductsViewModel
+import com.sample.home.products.screen.ProductListScreen
+import com.sample.multimodulesample.NavigationItem.Product
 import kotlinx.serialization.Serializable
+import kotlin.reflect.typeOf
 
 @Composable
 fun CreateAppNavigator() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Home) {
-        composable<Home> {
-            val loginViewModel: LoginViewModel = hiltViewModel()
-            LoginScreen(
-                loginStateFlow = loginViewModel.loginResponse,
-                loadingStateFlow = loginViewModel.loading,
-                onLoginSuccess = { user ->
-                    navController.navigate(
-                        Details(
-                            user.accessToken,
-                            user.email,
-                            user.firstName,
-                            user.gender,
-                            user.id,
-                            user.image,
-                            user.lastName,
-                            user.refreshToken,
-                            user.username
-                        )
-                    )
-                    loginViewModel.clearState()
-                },
-                onLoginClick = { username, password ->
-                    loginViewModel.login(username, password)
-                }
-            )
+    NavHost(navController = navController, startDestination = Product) {
+        composable<Product> { backStackEntry ->
+            val productsViewModel: ProductsViewModel = hiltViewModel()
+            ProductListScreen(
+                productsViewModel.productsStateFlow,
+                productsViewModel.loading,
+                onProductClick = {
+                    navController.navigate(NavigationItem.ProductDetail(it))
+                })
         }
 
-        composable<Details> { backStackEntry ->
-            val user: Details = backStackEntry.toRoute()
-            DashboardScreen(user.mapToLoginResponse(),onLogout = {
+        composable<NavigationItem.ProductDetail>(
+            typeMap = mapOf(typeOf<DomainProduct>() to CustomNavTypes.DomainProductType)
+        ) { backStackEntry ->
+            val product: NavigationItem.ProductDetail = backStackEntry.toRoute()
+            ProductDetailScreen(product.domainProduct, onBackClick = {
                 navController.popBackStack()
             })
         }
@@ -55,34 +41,12 @@ fun CreateAppNavigator() {
 }
 
 sealed class NavigationItem {
-    @Serializable
-    data object Home : NavigationItem()
 
     @Serializable
-    data class Details(
-        val accessToken: String,
-        val email: String,
-        val firstName: String,
-        val gender: String,
-        val id: Int,
-        val image: String,
-        val lastName: String,
-        val refreshToken: String,
-        val username: String
-    ) : NavigationItem() {
-        fun mapToLoginResponse(): LoginResponse {
-            return LoginResponse(
-                accessToken,
-                email,
-                firstName,
-                gender,
-                id,
-                image,
-                lastName,
-                refreshToken,
-                username
-            )
-        }
-    }
+    data object Product : NavigationItem()
+
+    @Serializable
+    data class ProductDetail(val domainProduct: DomainProduct) : NavigationItem()
+
 }
 

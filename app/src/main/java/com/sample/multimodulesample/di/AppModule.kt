@@ -5,6 +5,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.sample.data.remote.api.AuthAPI
 import com.sample.data.remote.repo.AuthRepoImpl
+import com.sample.domain.common.Configurations
 import com.sample.domain.repo.AuthRepo
 import dagger.Module
 import dagger.Provides
@@ -70,7 +71,7 @@ object AppModule {
     fun provideRetrofit(
         client: OkHttpClient, gsonConverterFactory: GsonConverterFactory
     ): Retrofit.Builder {
-        return Retrofit.Builder().baseUrl("https://dummyjson.com/").client(client)
+        return Retrofit.Builder().baseUrl(Configurations.BASE_URL).client(client)
             .addConverterFactory(gsonConverterFactory)
     }
 
