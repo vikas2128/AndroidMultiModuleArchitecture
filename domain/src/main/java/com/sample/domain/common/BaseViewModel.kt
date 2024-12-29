@@ -1,10 +1,8 @@
 package com.sample.domain.common
 
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.withContext
 
 abstract class BaseViewModel : ViewModel() {
     protected val _loading: MutableStateFlow<Boolean> = MutableStateFlow(false)
