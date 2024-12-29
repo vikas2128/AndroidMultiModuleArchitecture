@@ -67,6 +67,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockito.inline)
 }
 
 kapt {

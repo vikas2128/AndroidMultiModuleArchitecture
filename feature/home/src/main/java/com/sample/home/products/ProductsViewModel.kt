@@ -34,7 +34,6 @@ open class ProductsViewModel @Inject constructor(
         }
     }
 
-//8219125192
     fun getProducts() {
         getProductUseCase().onEach { result ->
             when (result) {
@@ -49,7 +48,7 @@ open class ProductsViewModel @Inject constructor(
 
                 is Resource.Error -> {
                     _loading.value = false
-                    messageHandler(result.uiMessage)
+                    _messageState.value = result.uiMessage
                 }
             }
         }.launchIn(viewModelScope)

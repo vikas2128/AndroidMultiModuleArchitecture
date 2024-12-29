@@ -38,7 +38,6 @@ class ProductsViewModelTest {
         MockitoAnnotations.openMocks(this)
         viewModel = ProductsViewModel(useCase)
         Dispatchers.setMain(testDispatcher)
-
     }
 
     @Test
@@ -62,7 +61,7 @@ class ProductsViewModelTest {
         })
         viewModel.getProducts()
         advanceUntilIdle()
-        assertEquals(uiMessage, viewModel.messageState.value!!.peekContent())
+        assertEquals(uiMessage, viewModel.messageState.value)
     }
 
 
@@ -81,7 +80,6 @@ class ProductsViewModelTest {
     fun tearDown() {
         Dispatchers.resetMain()
     }
-
 
     private fun getProductList(): List<DomainProduct> {
         return listOf(

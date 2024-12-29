@@ -19,7 +19,7 @@ class LoginViewModel @Inject constructor(
     private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {
 
-    protected val _loginResponse: MutableStateFlow<LoginResponse?> = MutableStateFlow(null)
+    private val _loginResponse: MutableStateFlow<LoginResponse?> = MutableStateFlow(null)
 
     val loginResponse: StateFlow<LoginResponse?>
         get() = _loginResponse
@@ -41,7 +41,7 @@ class LoginViewModel @Inject constructor(
 
                     is Resource.Error -> {
                         _loading.value = false
-                        messageHandler(result.uiMessage)
+                        _messageState.value = result.uiMessage
                     }
                 }
             }

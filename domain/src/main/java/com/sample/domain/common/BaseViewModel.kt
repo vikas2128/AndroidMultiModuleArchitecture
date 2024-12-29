@@ -12,14 +12,8 @@ abstract class BaseViewModel : ViewModel() {
     val loading: StateFlow<Boolean>
         get() = _loading
 
-    private val _messageState = MutableStateFlow<Event<UIMessage>?>(null)
+    protected val _messageState = MutableStateFlow<UIMessage?>(null)
 
-    val messageState: StateFlow<Event<UIMessage>?>
+    val messageState: StateFlow<UIMessage?>
         get() = _messageState
-
-    open suspend fun messageHandler(message: UIMessage) {
-        withContext(Dispatchers.Main) {
-            _messageState.value = Event(message)
-        }
-    }
 }
