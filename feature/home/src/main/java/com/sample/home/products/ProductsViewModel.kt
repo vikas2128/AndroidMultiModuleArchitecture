@@ -6,16 +6,14 @@ import com.sample.domain.common.Resource
 import com.sample.domain.dto.login.products.DomainProduct
 import com.sample.domain.usecases.GetProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
-class ProductsViewModel @Inject constructor(
+open class ProductsViewModel @Inject constructor(
     private val getProductUseCase: GetProductUseCase
 ) : BaseViewModel() {
 
@@ -27,34 +25,33 @@ class ProductsViewModel @Inject constructor(
         get() = _productsStateFlow
 
 
-    init {
-        getProducts()
+    private var isInitialized = false
+
+    fun initialize() {
+        if (!isInitialized) {
+            isInitialized = true
+            getProducts()
+        }
     }
 
+//8219125192
     fun getProducts() {
         getProductUseCase().onEach { result ->
-            withContext(Dispatchers.Main) {
-                _loading.value = true
-                when (result) {
-                    is Resource.Success -> {
-                        _loading.value = false
-                        _productsStateFlow.value = result.data
-                    }
+            when (result) {
+                is Resource.Success -> {
+                    _productsStateFlow.value = result.data
+                    _loading.value = false
+                }
 
-                    is Resource.Loading -> {
-                        _loading.value = true
-                    }
+                is Resource.Loading -> {
+                    _loading.value = true
+                }
 
-                    is Resource.Error -> {
-                        _loading.value = false
-                        messageHandler(result.uiMessage)
-                    }
+                is Resource.Error -> {
+                    _loading.value = false
+                    messageHandler(result.uiMessage)
                 }
             }
         }.launchIn(viewModelScope)
-    }
-
-    fun clearState() {
-        _productsStateFlow.value = emptyList()
     }
 }

@@ -1,6 +1,7 @@
 package com.sample.multimodulesample
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +22,11 @@ fun CreateAppNavigator() {
     NavHost(navController = navController, startDestination = Product) {
         composable<Product> { backStackEntry ->
             val productsViewModel: ProductsViewModel = hiltViewModel()
+
+            LaunchedEffect(Unit) {
+                productsViewModel.initialize()
+            }
+
             ProductListScreen(
                 productsViewModel.productsStateFlow,
                 productsViewModel.loading,

@@ -12,10 +12,15 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 35
+        testOptions {
+            targetSdk = 35
+        }
+
+        lint {
+            targetSdk = 35
+        }
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -50,6 +55,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.material.icons.extended)
 
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
@@ -58,15 +64,13 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     testImplementation(libs.mockito.core)
-    testImplementation( libs.mockito.kotlin)
+    testImplementation(libs.mockito.kotlin)
     testImplementation(libs.junit)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    implementation (libs.androidx.material.icons.extended)
-
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.mockito.inline)
 }
 
 kapt {

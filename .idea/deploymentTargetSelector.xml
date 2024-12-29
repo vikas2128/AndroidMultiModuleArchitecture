@@ -28,9 +28,6 @@
       <SelectionState runConfigName="feature.home">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>
-      <SelectionState runConfigName="HomeScreenPreview">
-        <option name="selectionMode" value="DROPDOWN" />
-      </SelectionState>
       <SelectionState runConfigName="feature.core">
         <option name="selectionMode" value="DROPDOWN" />
       </SelectionState>

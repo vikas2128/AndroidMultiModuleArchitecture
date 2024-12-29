@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetProductUseCase @Inject constructor(
-    private val repo: AuthRepo,
+      val repo: AuthRepo,
 ) {
     operator fun invoke(): Flow<Resource<List<DomainProduct>>> =
         flow {
