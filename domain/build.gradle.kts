@@ -1,8 +1,6 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.android.hilt)
-    alias(libs.plugins.kotlin.kapt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -19,7 +17,6 @@ android {
         lint {
             targetSdk = 35
         }
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -42,24 +39,14 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.okhttp)
+
     implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
     implementation(libs.kotlinx.serialization.json)
 
-    testImplementation (libs.mockito.core)
-    testImplementation( libs.mockito.kotlin)
     testImplementation(libs.junit)
-    testImplementation(libs.junit.jupiter)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation (libs.mockito.inline)
-}
-
-kapt {
-    correctErrorTypes = true
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockito.inline)
 }

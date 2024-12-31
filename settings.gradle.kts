@@ -23,7 +23,4 @@ rootProject.name = "MultiModuleArchitecture"
 include(":app")
 include(":data")
 include(":domain")
-include(":feature")
-include(":feature:auth")
 include(":feature:home")
-include(":feature:core")

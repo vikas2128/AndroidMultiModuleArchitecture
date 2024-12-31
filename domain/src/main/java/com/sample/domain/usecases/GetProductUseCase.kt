@@ -5,14 +5,14 @@ import com.sample.domain.common.Resource
 import com.sample.domain.common.safeApiCall
 import com.sample.domain.dto.login.products.DomainProduct
 import com.sample.domain.dto.login.products.ProductWrapper
-import com.sample.domain.repo.AuthRepo
+import com.sample.domain.repo.ProductRepo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class GetProductUseCase @Inject constructor(
-      val repo: AuthRepo,
+    val repo: ProductRepo,
 ) {
     operator fun invoke(): Flow<Resource<List<DomainProduct>>> =
         flow {

@@ -43,12 +43,11 @@ fun ProductListItem(product: DomainProduct, onClick: (DomainProduct) -> Unit) {
                 RoundedCornerShape(8.dp)
             )
     ) {
-        // Thumbnail
         Image(
             painter = rememberAsyncImagePainter(
                 model = product.thumbnail,
-                error = painterResource(id = R.drawable.ic_launcher_foreground), // Fallback image
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground) // Placeholder image
+                error = painterResource(id = R.drawable.ic_launcher_foreground),
+                placeholder = painterResource(id = R.drawable.ic_launcher_foreground)
             ),
             contentDescription = "${product.title} thumbnail",
             modifier = Modifier
@@ -59,7 +58,6 @@ fun ProductListItem(product: DomainProduct, onClick: (DomainProduct) -> Unit) {
 
         Spacer(modifier = Modifier.width(8.dp))
 
-        // Product Details
         Column(
             modifier = Modifier
                 .weight(1f)
@@ -85,7 +83,6 @@ fun ProductListItem(product: DomainProduct, onClick: (DomainProduct) -> Unit) {
             )
         }
 
-        // Rating
         RatingBar(
             rating = product.rating,
             modifier = Modifier
@@ -99,30 +96,5 @@ fun ProductListItem(product: DomainProduct, onClick: (DomainProduct) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewProductListItem() {
-    val sampleDomainProduct = DomainProduct(
-        availabilityStatus = "Low Stock",
-        brand = "Essence",
-        category = "beauty",
-        description = "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",
-        discountPercentage = 7.17,
-        id = 1,
-        images = listOf(
-            "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/1.png",
-            "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/2.png"
-        ),
-        minimumOrderQuantity = 24,
-        price = 9.99,
-        rating = 4.94,
-        returnPolicy = "30 days return policy",
-        shippingInformation = "Ships in 1 month",
-        sku = "RCH45Q1A",
-        stock = 5,
-        tags = listOf("beauty", "mascara"),
-        thumbnail = "https://cdn.dummyjson.com/products/images/beauty/Essence%20Mascara%20Lash%20Princess/thumbnail.png",
-        title = "Essence Mascara Lash Princess",
-        warrantyInformation = "1 month warranty",
-        weight = 2,
-        emptyList()
-    )
-    ProductListItem(product = sampleDomainProduct, onClick = {})
+    ProductListItem(product = DomainProduct.dummyObj(), onClick = {})
 }

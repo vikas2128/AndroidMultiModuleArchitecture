@@ -19,7 +19,6 @@ android {
         lint {
             targetSdk = 35
         }
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -41,9 +40,7 @@ android {
 
 
 dependencies {
-    implementation(project(":feature:core"))
     implementation(project(":domain"))
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -56,21 +53,15 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.material.icons.extended)
-
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.serialization.json)
-
+    testImplementation(libs.junit)
     testImplementation(libs.mockito.core)
     testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.junit)
-    testImplementation(libs.junit.jupiter)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    testImplementation (libs.kotlinx.coroutines.test)
-    testImplementation (libs.mockito.inline)
+    testImplementation(libs.mockito.inline)
+    testImplementation(libs.kotlinx.coroutines.test)
 }
 
 kapt {

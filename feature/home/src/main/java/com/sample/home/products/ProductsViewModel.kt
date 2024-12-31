@@ -1,7 +1,7 @@
 package com.sample.home.products
 
 import androidx.lifecycle.viewModelScope
-import com.sample.domain.common.BaseViewModel
+import com.sample.home.common.BaseViewModel
 import com.sample.domain.common.Resource
 import com.sample.domain.dto.login.products.DomainProduct
 import com.sample.domain.usecases.GetProductUseCase
