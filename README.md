@@ -1,6 +1,6 @@
 # AndroidMultiModuleArchitecture
-![Screenshot Description](Screenshot_20250101_170844.png)
-![Screenshot Description](Screenshot_20250101_170859.png)
+![Screenshot Description](list.png)
+![Screenshot Description](detail.png)
 ## About
 
 This project demonstrates a multi-module architecture for Android applications. It showcases how to organize code into separate modules for improved maintainability, scalability, and testability.
