@@ -8,14 +8,4 @@ data class Review(
     val rating: Int,
     val reviewerEmail: String,
     val reviewerName: String
-) {
-    fun mapToDomainReview():DomainReview {
-       return DomainReview(
-           comment = comment,
-           date = date,
-           rating = rating,
-           reviewerEmail = reviewerEmail,
-           reviewerName = reviewerName
-       )
-    }
-}
+)

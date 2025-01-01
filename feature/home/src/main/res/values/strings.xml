@@ -7,4 +7,5 @@
     <string name="sample_int">99.9</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="back">Back</string>
+    <string name="retry">Retry</string>
 </resources>

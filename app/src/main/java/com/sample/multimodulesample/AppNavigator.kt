@@ -10,6 +10,7 @@ import androidx.navigation.toRoute
 import com.sample.domain.dto.login.products.DomainProduct
 import com.sample.home.CustomNavTypes
 import com.sample.home.productdetails.screen.ProductDetailScreen
+import com.sample.home.products.ProductsIntent
 import com.sample.home.products.ProductsViewModel
 import com.sample.home.products.screen.ProductListScreen
 import com.sample.multimodulesample.NavigationItem.Product
@@ -24,15 +25,19 @@ fun CreateAppNavigator() {
             val productsViewModel: ProductsViewModel = hiltViewModel()
 
             LaunchedEffect(Unit) {
-                productsViewModel.initialize()
+                productsViewModel.sendIntent(ProductsIntent.Initialize)
             }
 
             ProductListScreen(
-                productsViewModel.productsStateFlow,
-                productsViewModel.loading,
+                productsViewModel.stateFlow,
                 onProductClick = {
                     navController.navigate(NavigationItem.ProductDetail(it))
+                    productsViewModel.clearNavigationEvent()
+                },
+                onRetry={
+                    productsViewModel.sendIntent(ProductsIntent.GetProducts)
                 })
+
         }
 
         composable<NavigationItem.ProductDetail>(

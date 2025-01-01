@@ -26,30 +26,7 @@ data class Product(
     val warrantyInformation: String,
     val weight: Int
 ) {
-    fun mapToDomainProduct(): DomainProduct {
-        return DomainProduct(
-            availabilityStatus = availabilityStatus,
-            brand = brand,
-            category = category,
-            description = description,
-            discountPercentage = discountPercentage,
-            id = id,
-            images = images,
-            minimumOrderQuantity = minimumOrderQuantity,
-            price = price,
-            rating = rating,
-            returnPolicy = returnPolicy,
-            shippingInformation = shippingInformation,
-            sku = sku,
-            stock = stock,
-            tags = tags,
-            thumbnail = thumbnail,
-            title = title,
-            warrantyInformation = warrantyInformation,
-            weight = weight,
-            reviews = reviews.map { it.mapToDomainReview() }
-        )
-    }
+
 
 
     companion object {

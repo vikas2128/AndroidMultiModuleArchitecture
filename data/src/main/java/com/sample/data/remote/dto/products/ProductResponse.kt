@@ -7,13 +7,4 @@ data class ProductResponse(
     val products: List<Product>,
     val skip: Int,
     val total: Int
-) {
-    fun mapToDomainProduct(): ProductWrapper {
-        return ProductWrapper(
-            limit = limit,
-            products = products.map { it.mapToDomainProduct() },
-            skip = skip,
-            total = total
-        )
-    }
-}
+)

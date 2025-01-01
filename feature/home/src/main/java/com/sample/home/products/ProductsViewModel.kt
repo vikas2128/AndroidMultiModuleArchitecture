@@ -1,56 +1,93 @@
 package com.sample.home.products
 
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sample.home.common.BaseViewModel
 import com.sample.domain.common.Resource
 import com.sample.domain.dto.login.products.DomainProduct
 import com.sample.domain.usecases.GetProductUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 open class ProductsViewModel @Inject constructor(
     private val getProductUseCase: GetProductUseCase
-) : BaseViewModel() {
+) : ViewModel() {
 
-    private val _productsStateFlow: MutableStateFlow<List<DomainProduct>> = MutableStateFlow(
-        emptyList()
-    )
+    private val _intentFlow = MutableSharedFlow<ProductsIntent>(replay = 0)
+    val intentFlow: SharedFlow<ProductsIntent> = _intentFlow
 
-    val productsStateFlow: StateFlow<List<DomainProduct>>
-        get() = _productsStateFlow
+    private val _stateFlow: MutableStateFlow<ProductsState> = MutableStateFlow(ProductsState())
+    val stateFlow: StateFlow<ProductsState> = _stateFlow
 
+    init {
+        handleIntents()
+    }
 
-    private var isInitialized = false
-
-    fun initialize() {
-        if (!isInitialized) {
-            isInitialized = true
-            getProducts()
+    private fun handleIntents() {
+        viewModelScope.launch {
+            _intentFlow.collect { intent ->
+                when (intent) {
+                    is ProductsIntent.Initialize -> initialize()
+                    is ProductsIntent.GetProducts -> getProducts()
+                    is ProductsIntent.ShowProductDetail -> showProductDetail(intent.product)
+                }
+            }
         }
     }
 
-    fun getProducts() {
-        getProductUseCase().onEach { result ->
-            when (result) {
-                is Resource.Success -> {
-                    _productsStateFlow.value = result.data
-                    _loading.value = false
-                }
+    private fun initialize() {
+        if (!_stateFlow.value.isLoading) {
+            _stateFlow.value = _stateFlow.value.copy(isLoading = true)
+            viewModelScope.launch {
+                _intentFlow.emit(ProductsIntent.GetProducts)
+            }
+        }
+    }
 
-                is Resource.Loading -> {
-                    _loading.value = true
-                }
+    private fun getProducts() {
+        viewModelScope.launch {
+            getProductUseCase().collect { result ->
+                when (result) {
+                    is Resource.Success -> {
+                        _stateFlow.value = ProductsState(
+                            products = result.data,
+                            isLoading = false,
+                            errorMessage = null
+                        )
+                    }
 
-                is Resource.Error -> {
-                    _loading.value = false
-                    _messageState.value = result.uiMessage
+                    is Resource.Loading -> {
+                        _stateFlow.value = _stateFlow.value.copy(isLoading = true)
+                    }
+
+                    is Resource.Error -> {
+                        _stateFlow.value = ProductsState(
+                            products = emptyList(),
+                            isLoading = false,
+                            errorMessage = result.uiMessage
+                        )
+                    }
                 }
             }
-        }.launchIn(viewModelScope)
+        }
+    }
+
+    private fun showProductDetail(product: DomainProduct) {
+        _stateFlow.value = _stateFlow.value.copy(navigateToProductDetail = product)
+    }
+
+    fun clearNavigationEvent() {
+        _stateFlow.value = _stateFlow.value.copy(navigateToProductDetail = null)
+    }
+
+    fun sendIntent(intent: ProductsIntent) {
+        viewModelScope.launch {
+            _intentFlow.emit(intent)
+        }
     }
 }
